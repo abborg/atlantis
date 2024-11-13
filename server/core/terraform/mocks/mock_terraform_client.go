@@ -4,12 +4,14 @@
 package mocks
 
 import (
-	go_version "github.com/hashicorp/go-version"
-	pegomock "github.com/petergtz/pegomock/v4"
-	command "github.com/runatlantis/atlantis/server/events/command"
-	logging "github.com/runatlantis/atlantis/server/logging"
 	"reflect"
 	"time"
+
+	go_version "github.com/hashicorp/go-version"
+	pegomock "github.com/petergtz/pegomock/v4"
+	"github.com/runatlantis/atlantis/server/core/terraform"
+	command "github.com/runatlantis/atlantis/server/events/command"
+	logging "github.com/runatlantis/atlantis/server/logging"
 )
 
 type MockClient struct {
@@ -42,7 +44,7 @@ func (mock *MockClient) DetectVersion(log logging.SimpleLogging, projectDirector
 	return _ret0
 }
 
-func (mock *MockClient) EnsureVersion(log logging.SimpleLogging, v *go_version.Version) error {
+func (mock *MockClient) EnsureVersion(log logging.SimpleLogging, d terraform.Distribution, v *go_version.Version) error {
 	if mock == nil {
 		panic("mock must not be nil. Use myMock := NewMockClient().")
 	}
@@ -57,7 +59,7 @@ func (mock *MockClient) EnsureVersion(log logging.SimpleLogging, v *go_version.V
 	return _ret0
 }
 
-func (mock *MockClient) RunCommandWithVersion(ctx command.ProjectContext, path string, args []string, envs map[string]string, v *go_version.Version, workspace string) (string, error) {
+func (mock *MockClient) RunCommandWithVersion(ctx command.ProjectContext, path string, args []string, envs map[string]string, d terraform.Distribution, v *go_version.Version, workspace string) (string, error) {
 	if mock == nil {
 		panic("mock must not be nil. Use myMock := NewMockClient().")
 	}
@@ -183,7 +185,7 @@ func (c *MockClient_EnsureVersion_OngoingVerification) GetAllCapturedArguments()
 	return
 }
 
-func (verifier *VerifierMockClient) RunCommandWithVersion(ctx command.ProjectContext, path string, args []string, envs map[string]string, v *go_version.Version, workspace string) *MockClient_RunCommandWithVersion_OngoingVerification {
+func (verifier *VerifierMockClient) RunCommandWithVersion(ctx command.ProjectContext, path string, args []string, envs map[string]string, tfDistribution terraform.Distribution, v *go_version.Version, workspace string) *MockClient_RunCommandWithVersion_OngoingVerification {
 	_params := []pegomock.Param{ctx, path, args, envs, v, workspace}
 	methodInvocations := pegomock.GetGenericMockFrom(verifier.mock).Verify(verifier.inOrderContext, verifier.invocationCountMatcher, "RunCommandWithVersion", _params, verifier.timeout)
 	return &MockClient_RunCommandWithVersion_OngoingVerification{mock: verifier.mock, methodInvocations: methodInvocations}

@@ -117,6 +117,7 @@ type UserConfig struct {
 	TFEToken                   string          `mapstructure:"tfe-token"`
 	VarFileAllowlist           string          `mapstructure:"var-file-allowlist"`
 	VCSStatusName              string          `mapstructure:"vcs-status-name"`
+	DefaultTFDistribution      string          `mapstructure:"default-tf-distribution"`
 	DefaultTFVersion           string          `mapstructure:"default-tf-version"`
 	Webhooks                   []WebhookConfig `mapstructure:"webhooks" flag:"false"`
 	WebBasicAuth               bool            `mapstructure:"web-basic-auth"`

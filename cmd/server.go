@@ -72,6 +72,7 @@ const (
 	CheckoutStrategyFlag             = "checkout-strategy"
 	ConfigFlag                       = "config"
 	DataDirFlag                      = "data-dir"
+	DefaultTFDistributionFlag        = "default-tf-distribution"
 	DefaultTFVersionFlag             = "default-tf-version"
 	DisableApplyAllFlag              = "disable-apply-all"
 	DisableAutoplanFlag              = "disable-autoplan"
@@ -436,6 +437,10 @@ var stringFlags = map[string]stringFlag{
 		description: "API token for Terraform Cloud/Enterprise. This will be used to generate a ~/.terraformrc file." +
 			" Only set if using TFC/E as a remote backend." +
 			" Should be specified via the ATLANTIS_TFE_TOKEN environment variable for security.",
+	},
+	DefaultTFDistributionFlag: {
+		description:  fmt.Sprintf("Which TF distribution to use. Can be set to %s or %s.", TFDistributionTerraform, TFDistributionOpenTofu),
+		defaultValue: DefaultTFDistribution,
 	},
 	DefaultTFVersionFlag: {
 		description: "Terraform version to default to (ex. v0.12.0). Will download if not yet on disk." +
@@ -840,12 +845,13 @@ func (s *ServerCmd) run() error {
 
 	// Config looks good. Start the server.
 	server, err := s.ServerCreator.NewServer(userConfig, server.Config{
-		AllowForkPRsFlag:        AllowForkPRsFlag,
-		AtlantisURLFlag:         AtlantisURLFlag,
-		AtlantisVersion:         s.AtlantisVersion,
-		DefaultTFVersionFlag:    DefaultTFVersionFlag,
-		RepoConfigJSONFlag:      RepoConfigJSONFlag,
-		SilenceForkPRErrorsFlag: SilenceForkPRErrorsFlag,
+		AllowForkPRsFlag:          AllowForkPRsFlag,
+		AtlantisURLFlag:           AtlantisURLFlag,
+		AtlantisVersion:           s.AtlantisVersion,
+		DefaultTFDistributionFlag: DefaultTFDistributionFlag,
+		DefaultTFVersionFlag:      DefaultTFVersionFlag,
+		RepoConfigJSONFlag:        RepoConfigJSONFlag,
+		SilenceForkPRErrorsFlag:   SilenceForkPRErrorsFlag,
 	})
 
 	if err != nil {

@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/go-version"
 	. "github.com/petergtz/pegomock/v4"
 	"github.com/runatlantis/atlantis/server/core/runtime"
+	tf "github.com/runatlantis/atlantis/server/core/terraform"
 	"github.com/runatlantis/atlantis/server/core/terraform/mocks"
 	"github.com/runatlantis/atlantis/server/events/models"
 	jobmocks "github.com/runatlantis/atlantis/server/jobs/mocks"
@@ -143,7 +144,7 @@ func TestPostWorkflowHookRunner_Run(t *testing.T) {
 
 		RegisterMockTestingT(t)
 		terraform := mocks.NewMockClient()
-		When(terraform.EnsureVersion(Any[logging.SimpleLogging](), Any[*version.Version]())).
+		When(terraform.EnsureVersion(Any[logging.SimpleLogging](), Any[tf.Distribution](), Any[*version.Version]())).
 			ThenReturn(nil)
 
 		logger := logging.NewNoopLogger(t)

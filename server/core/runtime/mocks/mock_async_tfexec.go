@@ -4,12 +4,14 @@
 package mocks
 
 import (
+	"reflect"
+	"time"
+
 	go_version "github.com/hashicorp/go-version"
 	pegomock "github.com/petergtz/pegomock/v4"
 	models "github.com/runatlantis/atlantis/server/core/runtime/models"
+	"github.com/runatlantis/atlantis/server/core/terraform"
 	command "github.com/runatlantis/atlantis/server/events/command"
-	"reflect"
-	"time"
 )
 
 type MockAsyncTFExec struct {
@@ -27,7 +29,7 @@ func NewMockAsyncTFExec(options ...pegomock.Option) *MockAsyncTFExec {
 func (mock *MockAsyncTFExec) SetFailHandler(fh pegomock.FailHandler) { mock.fail = fh }
 func (mock *MockAsyncTFExec) FailHandler() pegomock.FailHandler      { return mock.fail }
 
-func (mock *MockAsyncTFExec) RunCommandAsync(ctx command.ProjectContext, path string, args []string, envs map[string]string, v *go_version.Version, workspace string) (chan<- string, <-chan models.Line) {
+func (mock *MockAsyncTFExec) RunCommandAsync(ctx command.ProjectContext, path string, args []string, envs map[string]string, d terraform.Distribution, v *go_version.Version, workspace string) (chan<- string, <-chan models.Line) {
 	if mock == nil {
 		panic("mock must not be nil. Use myMock := NewMockAsyncTFExec().")
 	}
@@ -91,7 +93,7 @@ type VerifierMockAsyncTFExec struct {
 	timeout                time.Duration
 }
 
-func (verifier *VerifierMockAsyncTFExec) RunCommandAsync(ctx command.ProjectContext, path string, args []string, envs map[string]string, v *go_version.Version, workspace string) *MockAsyncTFExec_RunCommandAsync_OngoingVerification {
+func (verifier *VerifierMockAsyncTFExec) RunCommandAsync(ctx command.ProjectContext, path string, args []string, envs map[string]string, d terraform.Distribution, v *go_version.Version, workspace string) *MockAsyncTFExec_RunCommandAsync_OngoingVerification {
 	params := []pegomock.Param{ctx, path, args, envs, v, workspace}
 	methodInvocations := pegomock.GetGenericMockFrom(verifier.mock).Verify(verifier.inOrderContext, verifier.invocationCountMatcher, "RunCommandAsync", params, verifier.timeout)
 	return &MockAsyncTFExec_RunCommandAsync_OngoingVerification{mock: verifier.mock, methodInvocations: methodInvocations}
