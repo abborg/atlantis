@@ -26,7 +26,7 @@ type Project struct {
 	Dir                       *string    `yaml:"dir,omitempty"`
 	Workspace                 *string    `yaml:"workspace,omitempty"`
 	Workflow                  *string    `yaml:"workflow,omitempty"`
-	TerraformDistribution     *string    `yaml:"terraform_distribution:omitempty`
+	TerraformDistribution     *string    `yaml:"terraform_distribution,omitempty"`
 	TerraformVersion          *string    `yaml:"terraform_version,omitempty"`
 	Autoplan                  *Autoplan  `yaml:"autoplan,omitempty"`
 	PlanRequirements          []string   `yaml:"plan_requirements,omitempty"`
@@ -209,9 +209,9 @@ func validImportReq(value interface{}) error {
 }
 
 func validDistribution(value interface{}) error {
-	distribution := value.(string)
-	if distribution != "terraform" && distribution != "opentofu" {
-		return fmt.Errorf("%q is not a valid terraform_distribution, only %q and %q are supported", distribution, "terraform", "opentofu")
+	distribution := value.(*string)
+	if distribution != nil && *distribution != "terraform" && *distribution != "opentofu" {
+		return fmt.Errorf("%q is not a valid terraform_distribution, only %q and %q are supported", *distribution, "terraform", "opentofu")
 	}
 	return nil
 }

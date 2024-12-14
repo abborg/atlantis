@@ -339,7 +339,7 @@ func (c *DefaultClient) EnsureVersion(log logging.SimpleLogging, d terraform.Dis
 
 	var err error
 	c.versionsLock.Lock()
-	_, err = ensureVersion(log, c.distribution, c.versions, v, c.binDir, c.downloadBaseURL, c.downloadAllowed)
+	_, err = ensureVersion(log, d, c.versions, v, c.binDir, c.downloadBaseURL, c.downloadAllowed)
 	c.versionsLock.Unlock()
 	if err != nil {
 		return err
@@ -420,7 +420,7 @@ func (c *DefaultClient) prepCmd(log logging.SimpleLogging, d terraform.Distribut
 	} else {
 		var err error
 		c.versionsLock.Lock()
-		binPath, err = ensureVersion(log, c.distribution, c.versions, v, c.binDir, c.downloadBaseURL, c.downloadAllowed)
+		binPath, err = ensureVersion(log, d, c.versions, v, c.binDir, c.downloadBaseURL, c.downloadAllowed)
 		c.versionsLock.Unlock()
 		if err != nil {
 			return "", nil, err
